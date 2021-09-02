@@ -1,0 +1,45 @@
+// 全局样式
+* {
+    margin: 0;
+    padding: 0;
+}
+body, html {
+    width: 100vw;
+    height: 100vh;
+    background: #f0f2f5;
+}
+
+*,
+*:before,
+*:after {
+     box-sizing: border-box;
+}
+
+a,
+a:focus,
+a:hover {
+    color: inherit;
+    outline: none;
+    text-decoration: none;
+}
+
+div:focus {
+    outline: none;
+}
+
+.clearfix {
+    &:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+}
+
+/* 表格样式 */
+.el-table__header th {
+    background: #F8F8F9;
+    color: #606266;
+}
+.el-table__fixed-right::before, .el-table__fixed::before {
+    background-color: transparent;
+}
