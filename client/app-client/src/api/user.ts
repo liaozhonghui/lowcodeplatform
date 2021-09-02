@@ -1,3 +1,4 @@
+import { has } from 'lodash';
 import http from '../libs/http';
 import store from '../store';
 
@@ -14,5 +15,7 @@ export const getUserInfo = async (query: any) => {
 };
 
 export const loginApi = async (data: any) => {
-  await http.post('/userCenter/login', data);
+  let res = await http.post('/userCenter/login', data);
+  if (has(res, 'data')) return res.data;
+  return {};
 };

@@ -10,6 +10,8 @@ export default class UserController extends Controller {
     if (isEmpty(password)) ctx.throw(ERRORCODE.paramError, '请输入密码.');
 
     const res = await service.userCenter.login(email, password);
+    ctx.set('sessionToken', res.token.sessionToken);
+    ctx.set('freshToken', res.token.freshToken);
     ctx.helper.success({ ctx, res });
   }
 

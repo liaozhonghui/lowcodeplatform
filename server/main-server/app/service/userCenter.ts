@@ -1,6 +1,6 @@
 import { Service } from "egg";
 import { pswdEncode } from "../util";
-import { isEmpty } from 'lodash';
+import { isEmpty, omit } from 'lodash';
 import { ERRORCODE } from "../util/constants";
 export default class UserService extends Service {
   async login(email, password) {
@@ -13,7 +13,7 @@ export default class UserService extends Service {
 
     const token = await this.service.actionToken.createToken(userInst._id);
     userInst.token = token;
-    return userInst;
+    return omit(userInst, 'password');
   }
   async list() {
     // TODO: 增加用户权限校验

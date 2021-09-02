@@ -4,12 +4,14 @@ import store from "../store/index";
 import { result, errMsg } from "../api/result";
 import settings from '../config/settings';
 import { ElMessage } from 'element-plus';
+import { isNil } from 'lodash';
 
-const service = axios.create({
-  baseURL: 'http://127.0.0.1:7001',
+const options: any = {
   withCredentials: false,
   timeout: 120000
-});
+};
+if (!isNil(import.meta.env.VITE_SERVER)) options.baseURL = import.meta.env.VITE_SERVER;
+const service = axios.create(options);
 
 // 添加一个请求拦截器
 service.interceptors.request.use(
@@ -37,16 +39,6 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   async (response) => {
     const code = response.data.code;
-
-    // 重置最新token
-    const headers = response.headers;
-    if (headers?.sessiontoken) {
-      sessionStorage.setItem('sessiontoken', headers.sessiontoken);
-    }
-    if (headers?.freshtoken) {
-      sessionStorage.setItem('freshtoken', headers.freshtoken);
-    }
-
     // 接口当前登录状态失效或不存在
     if (code === result.TOKENEXP) {
       await store.dispatch('clearUserInfo');
@@ -58,13 +50,21 @@ service.interceptors.response.use(
       // 中断promise链
       return Promise.resolve(() => { });
     }
-    // 服务器错误
-    else if (code !== result.NORMAL) {
+    if (code !== result.NORMAL) {
       const errCode = code || 999;
       const msg = settings.serverError ? response.data.msg : (errMsg as any)[errCode];
       ElMessage.error(msg);
       return Promise.reject(new Error(msg));
     }
+    // 重置最新token
+    const headers = response.headers;
+    if (headers?.sessiontoken) {
+      sessionStorage.setItem('sessiontoken', headers.sessiontoken);
+    }
+    if (headers?.freshtoken) {
+      sessionStorage.setItem('freshtoken', headers.freshtoken);
+    }
+    console.log('response.data:', response.data);
     return response.data;
   },
   error => {

@@ -41,7 +41,7 @@ export default () => {
       loginApi(data)
         .then((userInfo: any) => {
           loading.value = false;
-          sessionStorage.setItem('userInfo', userInfo);
+          sessionStorage.setItem('userInfo', JSON.stringify(userInfo));
           ElMessage.success("登录成功");
           router.push({ path: redirect });
         }).catch(e => {
