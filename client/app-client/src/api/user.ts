@@ -12,3 +12,7 @@ export const getUserInfo = async (query: any) => {
   await store.dispatch('setUserInfo', userInfo);
   return userInfo.modules;
 };
+
+export const loginApi = async (data: any) => {
+  await http.post('/userCenter/login', data);
+};

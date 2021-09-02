@@ -56,13 +56,14 @@ service.interceptors.response.use(
         router.push({ path: '/login' });
       }
       // 中断promise链
-      return new Promise(() => { });
+      return Promise.resolve(() => { });
     }
     // 服务器错误
     else if (code !== result.NORMAL) {
       const errCode = code || 999;
       const msg = settings.serverError ? response.data.msg : (errMsg as any)[errCode];
       ElMessage.error(msg);
+      return Promise.reject(new Error(msg));
     }
     return response.data;
   },
