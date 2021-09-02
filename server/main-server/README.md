@@ -1,33 +1,7 @@
-# hackernews-async-ts
+# main-server
 
-[Hacker News](https://news.ycombinator.com/) showcase using typescript && egg
+main-server 表示共通业务平台的主服务
 
-## QuickStart
-
-### Development
-
-```bash
-$ npm i
-$ npm run dev
-$ open http://localhost:7001/
-```
-
-Don't tsc compile at development mode, if you had run `tsc` then you need to `npm run clean` before `npm run dev`.
-
-### Deploy
-
-```bash
-$ npm run tsc
-$ npm start
-```
-
-### Npm Scripts
-
-- Use `npm run lint` to check code style
-- Use `npm test` to run unit test
-- se `npm run clean` to clean compiled js at development mode once
-
-### Requirement
-
-- Node.js 8.x
-- Typescript 2.8+
+1. 与各个子服务进行通讯 ping pong
+2. 获取各个子服务的应用状态，cpu 和内存
+3. k8s 控制服务的启停
